@@ -1,13 +1,13 @@
 import express from 'express';
 
+import authRoutes from "./routes/authRoutes.ts";
+import chatRoutes from "./routes/chatRoutes.ts";
+import messageRoutes from "./routes/messageRoutes.ts";
+import userRoutes from "./routes/userRoutes.ts";
+
 const app = express();
 
-const port = process.env.POR || 3000;
-
-
-app.listen(port, () => {
-     console.log(`Server running on port: ${port}`);
-});
+app.use(express.json())
 
 app.get("/health", (req, res) => {
      res.json({ status: "ok", message: "Server is running"});
@@ -15,7 +15,7 @@ app.get("/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chats", chatRoutes);
-app.use("/api/messages", userRoutes)
+app.use("/api/messages", messageRoutes)
 app.use("/api/users", userRoutes);
 
 
