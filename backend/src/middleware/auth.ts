@@ -12,7 +12,8 @@ export const protectRoute = [
     async (req: authRequest, res: Response, next: NextFunction) => {
         try{
             const { userId: clerkId } = getAuth(req);
-            if (!clerkId) return res.sendStatus(401).json({message: "Unauthorised - Invalid token"});
+            //since  we call requireAuth() this if check is not necessary
+            //if (!clerkId) return res.sendStatus(401).json({message: "Unauthorised - Invalid token"});
 
             const user = await User.findOne({ clerkId });
             if (!user) return res.sendStatus(401).json({message: "User not found"});
@@ -20,8 +21,8 @@ export const protectRoute = [
             next();
 
         } catch(error){
-            console.error("Error in protectRoute middleware", error);
-            res.sendStatus(500).json({message: "Internal server error"});
+            res.status(500);
+            next(error);
         }
     }
 ]
